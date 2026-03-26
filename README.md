@@ -78,4 +78,4 @@ At that time, consult or request the LLM to directly call the specific Skills th
 - **To create Jobs-to-be-Done (JTBD):** Refer to `/knowledge-base/knowledge/jobs-to-be-done/SKILL.md`
 - **To create INVEST-standard User Stories:** Refer to `/knowledge-base/knowledge/user-story-skill/SKILL.md`
 
-This ensures your workflow is maximally streamlined and resource-efficient.
+Điều này đảm bảo luồng công việc của bạn được tinh gọn và tiết kiệm nguồn lực một cách tối đa.
