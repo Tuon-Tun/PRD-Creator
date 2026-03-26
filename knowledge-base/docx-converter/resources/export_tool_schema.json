@@ -1,0 +1,27 @@
+{
+  "name": "export_to_docx",
+  "description": "Convert approved Markdown PRD content into a Microsoft Word (.docx) file and save it locally.",
+  "method": "EXECUTE_LOCAL_SCRIPT",
+  "script_path": "knowledge-base/scripts/export_docx.py",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "filename": {
+        "type": "string",
+        "description": "Output filename. It should end with .docx, for example PRD_Feature_Name.docx."
+      },
+      "markdown_content": {
+        "type": "string",
+        "description": "The complete PRD Markdown content to convert."
+      },
+      "output_dir": {
+        "type": "string",
+        "description": "Optional output directory. If omitted, the script uses the current working directory."
+      }
+    },
+    "required": [
+      "filename",
+      "markdown_content"
+    ]
+  }
+}

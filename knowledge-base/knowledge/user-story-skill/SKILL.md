@@ -1,10 +1,16 @@
+---
+name: user-story-skill
+description: >-
+  Systematically create INVEST-standard User Stories with comprehensive Acceptance Criteria. Use when the user mentions "user story", "acceptance criteria", "AC", "INVEST", "story splitting", "story hierarchy", or asks for help writing or reviewing user stories. Also trigger when the user wants to decompose a feature into stories, ensure testable conditions, or align stories with business value. Do NOT use for general requirements gathering, feature specifications without a user-centric focus, or technical task breakdowns that don't follow the user story format.
+---
+
 # SKILL: User Stories & Acceptance Criteria
 
 **Trigger:** Write / draft / review / decompose / check User Stories or AC.
 **Rule:** Read fully before producing any output.
 
 ---
-
+ 
 ## 1 · STORY FORMAT (Non-Negotiable)
 
 ```text

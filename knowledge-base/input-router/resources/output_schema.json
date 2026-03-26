@@ -1,22 +1,50 @@
 {
-  "Feature_Name": "Tên tính năng (Ngắn gọn, tự đúc kết từ input)",
-  "Input_Type": "Phân loại input (JTBDs / Wireframe Notes / Business Requirements / Mixed)",
-  "Core_Objective": "Mục tiêu chính của tính năng này là gì?",
+  "Domain_Name": "domain slug in kebab-case, for example loyalty-wallet",
+  "Feature_Name": "short feature name inferred from the input",
+  "Input_Type": "JTBDs / Wireframe Notes / Business Requirements / Mixed",
+  "Core_Objective": "primary business or user outcome for this feature",
+  "Problem_Statement": {
+    "User_Problem": "what user problem is being solved",
+    "Business_Problem": "what business problem or opportunity is being addressed"
+  },
   "Target_Users": [
-    "Danh sách các đối tượng người dùng tương tác"
+    "specific actor or persona"
   ],
+  "Primary_User_Story": "As a [specific actor], I want to [action], so that [value].",
   "User_Flow": [
-    "Bước 1: ...",
-    "Bước 2: ..."
+    "Step 1: ...",
+    "Step 2: ..."
   ],
   "Business_Logic_and_Rules": [
-    "Quy tắc 1 (Vd: Điều kiện để kích hoạt hệ thống/tính năng)...",
-    "Quy tắc 2 (Vd: Xử lý khi dữ liệu không thỏa mãn)..."
+    "Rule 1: activation or eligibility logic",
+    "Rule 2: invalid input, timeout, or edge-case handling"
+  ],
+  "Functional_Requirements": [
+    "functional requirement 1"
+  ],
+  "Non_Functional_Requirements": [
+    "performance, security, scale, or reliability requirement"
+  ],
+  "Success_Metrics": [
+    {
+      "Metric": "metric name",
+      "Baseline": "current baseline or [NEEDS_CLARIFICATION]",
+      "Target": "desired target"
+    }
   ],
   "UI_UX_Requirements": [
-    "Các ghi chú về giao diện, component, pop-up được nhắc đến trong input"
+    "screen, component, state, modal, or interaction note"
+  ],
+  "API_or_Integration_Notes": [
+    "API, event, dependency, or external service note"
+  ],
+  "Diagram_Requirements": [
+    "None / Activity Diagram / Sequence Diagram / BPMN"
+  ],
+  "Assumptions": [
+    "assumption carried from the input or project context"
   ],
   "Missing_Information": [
-    "Liệt kê các rủi ro hoặc các case chưa được cover trong input để PO chú ý bổ sung"
+    "item that still needs product owner clarification"
   ]
 }

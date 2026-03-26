@@ -1,4 +1,4 @@
-# [Product Name] — [Feature Name] PRD
+# [Product Name] - [Feature Name] PRD
 
 ---
 
@@ -42,11 +42,11 @@
 ### 2.2 Job to Be Done (JTBD)
 
 <!--
-  One block per distinct user type, role, or usage context — no upper limit.
+  One block per distinct user type, role, or usage context - no upper limit.
   Think through every actor before deciding how many blocks to write.
 -->
 
-**JTBD — [User Type / Scenario]**
+**JTBD - [User Type / Scenario]**
 
 > When [situation], I want to [motivation], so I can [expected outcome].
 
@@ -81,10 +81,10 @@
   - Epic groups related User Stories.
   - User Story format: As a [persona], I want to [action], so that [value/reason].
   - Acceptance Criteria: Format as `Done when: [positive/negative condition]`.
-  
+
   Format example:
   **Epic 1: [Epic Name]**
-  - **US-01 — [Story Name]**
+  - **US-01 - [Story Name]**
     - **As a** [user role],
     - **I want to** [action],
     - **so that** [benefit].
@@ -92,6 +92,16 @@
       - Done when: [condition 1]
       - Done when: If [error], then [handling]
 -->
+
+### 3.2 Business Rules
+
+<!--
+  List every rule that constrains eligibility, pricing, permissions, limits, validation,
+  sequencing, status transitions, timeout behavior, retry behavior, and exception handling.
+  If the feature includes calculations, describe each calculation rule explicitly.
+-->
+
+- Rule 1:
 
 ### 3.3 Process Diagrams
 
@@ -103,34 +113,33 @@
 ### 3.4 Use Case Specifications
 
 <!--
-  One UC block per User Story (UC-01 mirrors US-01, UC-02 mirrors US-02, etc.).
+  One UC block per User Story (UC-01 mirrors US-01, UC-02 mirrors US-02, and so on).
 
   For EACH UC, exhaustively enumerate before writing:
 
-  ALTERNATIVE FLOWS — every valid deviation from the happy path:
-    • User cancels or dismisses at any step
-    • User chooses a different option or path
-    • User skips an optional step
-    • User modifies input before confirming
-    • System triggers a retry or pagination
-    → Each distinct trigger = one row (A1, A2, A3, ...). Do not stop at A1.
+  ALTERNATIVE FLOWS - every valid deviation from the happy path:
+    - User cancels or dismisses at any step
+    - User chooses a different option or path
+    - User skips an optional step
+    - User modifies input before confirming
+    - System triggers a retry or pagination
+    -> Each distinct trigger = one row (A1, A2, A3, and so on). Do not stop at A1.
 
-  EXCEPTION FLOWS — every error the system must handle:
-    • Authentication failure / session expiry
-    • Network timeout or service unavailable
-    • Invalid or missing input
-    • Server error (5xx)
-    • Empty or no-result response
-    • Rate limiting or quota exceeded
-    • Concurrent modification conflict
-    → Each distinct error = one row (E1, E2, E3, ...). Do not stop at E1.
+  EXCEPTION FLOWS - every error the system must handle:
+    - Authentication failure or session expiry
+    - Network timeout or service unavailable
+    - Invalid or missing input
+    - Server error (5xx)
+    - Empty or no-result response
+    - Rate limiting or quota exceeded
+    - Concurrent modification conflict
+    -> Each distinct error = one row (E1, E2, E3, and so on). Do not stop at E1.
 
-  CRITICAL MANDATE: YOU MUST WRITE OUT ALL NECESSARY USE CASES (UCs) FOR EVERY SINGLE USER STORY. 
+  CRITICAL MANDATE: YOU MUST WRITE OUT ALL NECESSARY USE CASES FOR EVERY USER STORY.
   A SINGLE USER STORY MAY REQUIRE MULTIPLE USE CASES TO COVER ALL FUNCTIONALITIES.
-  DO NOT STOP AT UC-01. IF A FEATURE REQUIRES 10 USE CASES ACROSS ALL ITS USER STORIES, YOU MUST WRITE ALL 10 FULL USE CASE TABLES.
 -->
 
-**UC-01 — [Use Case Name]**
+**UC-01 - [Use Case Name]**
 
 | Field             | Detail |
 |-------------------|--------|
@@ -155,7 +164,7 @@
 | Step | Error Condition | System Handling |
 |------|-----------------|-----------------|
 
-<!-- REPEAT THE ENTIRE UC BLOCK ABOVE FOR UC-02, UC-03, ... UNTIL ALL USE CASES ACROSS ALL USER STORIES ARE FULLY DOCUMENTED -->
+<!-- Repeat the full UC block above for UC-02, UC-03, and so on until coverage is complete. -->
 
 ---
 
@@ -164,7 +173,7 @@
 #### Functional Requirements
 
 <!--
-  Derive from all User Stories and ACs. No fixed upper limit.
+  Derive from all User Stories and Acceptance Criteria. No fixed upper limit.
 -->
 
 | ID  | Requirement | Priority |
@@ -191,4 +200,4 @@
 
 ---
 
-*Document generated using the PRD Writer skill.*
+*Document generated using the PRD template renderer.*

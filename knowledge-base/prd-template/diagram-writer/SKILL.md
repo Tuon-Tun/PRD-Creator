@@ -3,65 +3,65 @@ name: diagram-writer
 description: >
   Draw process diagrams on demand. Trigger when the user asks to "draw", "create", or
   "generate" a diagram, or mentions BPMN, activity diagram, sequence diagram, flow diagram,
-  or "vẽ diagram". Also trigger when a PRD session reaches §3.3 and diagrams are needed.
+  or "draw a diagram". Also trigger when a PRD session reaches section 3.3 and diagrams are needed.
 ---
 
 # Diagram Writer Skill
 
 Draw one diagram at a time based on user selection. If the feature context is already known
-(e.g. called from a PRD session), skip context questions and go straight to drawing.
+(for example from a PRD session), skip context questions and go straight to drawing.
 
 ---
 
 ## Workflow
 
-### Step 1 — Select diagram type (if not already specified)
+### Step 1 - Select diagram type (if not already specified)
 
 Ask the user to choose one:
 
-- **BPMN** — who does what, across actors/systems (renders in bpmn.io)
-- **Activity Diagram** — decision flow, branching logic, happy + error paths
-- **Sequence Diagram** — chronological message exchange between system components
+- **BPMN** - who does what across actors and systems
+- **Activity Diagram** - branching logic with happy and error paths
+- **Sequence Diagram** - message exchange between system components
 
-Present as a short choice, not a long explanation.
+Present the choice briefly.
 
-### Step 2 — Gather context (if not already known)
+### Step 2 - Gather context (if not already known)
 
-Ask only what is missing:
+Ask only what is still missing:
 
 - What feature or process should the diagram cover?
-- Who are the actors / system components involved?
-- What is the happy path? Any key decision points or error cases?
+- Who are the actors or system components involved?
+- What is the happy path? Are there any key decisions or error cases?
 
-### Step 3 — Draw
+### Step 3 - Draw
 
-Generate the diagram using the rules below. Output the code block immediately — no preamble.
+Generate the diagram using the rules below. Output the code block immediately with no preamble.
 After output, offer to draw the other diagram types for the same feature.
 
 ---
 
-## BPMN — bpmn.io XML
+## BPMN - bpmn.io XML
 
 Output a ` ```xml ` fenced block containing valid BPMN 2.0 XML.
 
 **Required structure:**
-`<collaboration>` pool → `<process>` with `<laneSet>` → one `<lane>` per actor →
-all flow elements with `<flowNodeRef>` → `<sequenceFlow>` for every connection →
+`<collaboration>` pool -> `<process>` with `<laneSet>` -> one `<lane>` per actor ->
+all flow elements with `<flowNodeRef>` -> `<sequenceFlow>` for every connection ->
 `<bpmndi:BPMNDiagram>` with `<dc:Bounds>` per shape and `<di:waypoint>` per edge.
 
 **Lanes:** minimum User + App/Frontend + Backend Service. Add more if needed.
 
 **Standard sizes:**
 
-- `task`: 120×80 px
-- `startEvent` / `endEvent`: 36×36 px
-- `exclusiveGateway`: 50×50 px
-- Pool label column: 30 px (lanes start at pool.x + 30, lane.width = pool.width − 30)
-- Lane heights: User 120–130 px, App 200–220 px, each backend lane ≥ 100 px
+- `task`: 120x80 px
+- `startEvent` / `endEvent`: 36x36 px
+- `exclusiveGateway`: 50x50 px
+- Pool label column: 30 px (lanes start at pool.x + 30, lane.width = pool.width - 30)
+- Lane heights: User 120-130 px, App 200-220 px, each backend lane >= 100 px
 
 **Layout rules:**
 
-- Align tasks that communicate across lanes vertically (keeps edges clean).
+- Align tasks that communicate across lanes vertically to keep edges clean.
 - Use `&amp;` for `&` in XML `name` attributes.
 
 **Skeleton:**
@@ -103,15 +103,15 @@ all flow elements with `<flowNodeRef>` → `<sequenceFlow>` for every connection
 
 ---
 
-## Activity Diagram — PlantUML
+## Activity Diagram - PlantUML
 
 Output a ` ```plantuml ` fenced block.
 
 **Rules:**
 
-- Must include: happy path + ≥ 1 alternative branch + ≥ 1 error/exception branch.
-- Step labels ≤ 8 words. No swimlanes (BPMN handles actor separation).
-- Use `if / then / else / endif`. Nested conditions allowed for complex flows.
+- Must include: happy path + at least 1 alternative branch + at least 1 error or exception branch.
+- Step labels must stay under 8 words. No swimlanes.
+- Use `if / then / else / endif`. Nested conditions are allowed.
 
 **Skeleton:**
 
@@ -122,7 +122,7 @@ skinparam ActivityBorderColor #333333
 skinparam ArrowColor #555555
 skinparam ActivityDiamondBackgroundColor #fff3cd
 
-title [Feature Name] — Activity Flow
+title [Feature Name] - Activity Flow
 
 start
 :[Entry point / trigger];
@@ -140,16 +140,16 @@ stop
 
 ---
 
-## Sequence Diagram — PlantUML
+## Sequence Diagram - PlantUML
 
 Output a ` ```plantuml ` fenced block.
 
 **Rules:**
 
 - `->` for requests (solid), `-->` for responses (dashed).
-- Wrap success vs error in `alt / else / end`.
-- Every external service = named participant (Auth, Analytics, DB, etc.).
-- Annotate every arrow with HTTP method + endpoint or action name.
+- Wrap success versus error paths in `alt / else / end`.
+- Every external service must be named as a participant (Auth, Analytics, DB, and so on).
+- Annotate every arrow with an HTTP method + endpoint or an action name.
 
 **Skeleton:**
 
@@ -159,12 +159,12 @@ skinparam SequenceArrowThickness 1.5
 skinparam ParticipantBackgroundColor #f0f4ff
 skinparam ParticipantBorderColor #3355aa
 
-title [Feature Name] — Sequence
+title [Feature Name] - Sequence
 
 actor User
 participant "[Frontend / App]" as App
-participant "[Backend Service]"  as Service
-participant "[External / DB]"    as Ext
+participant "[Backend Service]" as Service
+participant "[External / DB]" as Ext
 
 User -> App: [User action]
 App -> Service: [API request]

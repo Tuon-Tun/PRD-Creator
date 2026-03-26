@@ -1,58 +1,121 @@
 #!/usr/bin/env python3
-import sys
 import argparse
-import pypandoc
+import json
 import os
+import re
+import sys
+import tempfile
 
 
 def convert_md_to_docx(input_file, output_file):
     """
-    Converts a Markdown PRD file to a formatted DOCX file.
-    Requires Pandoc to be installed on the system.
+    Convert a Markdown file to a DOCX file.
     """
     if not os.path.exists(input_file):
-        print(f"Error: Input file '{input_file}' not found.")
-        sys.exit(1)
-
-    print(f"Converting '{input_file}' to '{output_file}'...")
+        raise FileNotFoundError(f"Input file not found: {input_file}")
 
     try:
-        extra_args = [
-            "--toc",
-            "--standalone",
-            "-V",
-            "geometry:margin=1in",
-        ]
+        import pypandoc
+    except ImportError as exc:
+        raise RuntimeError(
+            "pypandoc is not installed. Install pypandoc-binary or pypandoc first."
+        ) from exc
 
+    output_dir = os.path.dirname(os.path.abspath(output_file))
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
+
+    extra_args = [
+        "--toc",
+        "--standalone",
+        "-V",
+        "geometry:margin=1in",
+    ]
+
+    try:
         pypandoc.convert_file(
             input_file,
             "docx",
             outputfile=output_file,
             extra_args=extra_args,
         )
-        print("Conversion successful!")
+    except OSError as exc:
+        raise RuntimeError(
+            "Pandoc is not installed or not available in PATH."
+        ) from exc
+    except Exception as exc:
+        raise RuntimeError(f"Failed to convert Markdown to DOCX: {exc}") from exc
 
-    except OSError:
-        print("\nMissing Dependency: Pandoc is not installed or not in PATH.")
-        print("Please install Pandoc:")
-        print(" - macOS: brew install pandoc")
-        print(" - Ubuntu/Debian: sudo apt-get install pandoc")
-        print(" - Windows: choco install pandoc")
-        sys.exit(1)
-    except Exception as e:
-        print(f"An error occurred during conversion: {e}")
+    return os.path.abspath(output_file)
+
+
+def sanitize_filename(filename):
+    name = (filename or "PRD_Document.docx").strip()
+    if not name.lower().endswith(".docx"):
+        name = f"{name}.docx"
+    return re.sub(r'[<>:"/\\|?*]+', "_", name)
+
+
+def convert_markdown_content_to_docx(markdown_content, filename, output_dir=None):
+    safe_filename = sanitize_filename(filename)
+    target_dir = os.path.abspath(output_dir or os.getcwd())
+    os.makedirs(target_dir, exist_ok=True)
+    output_path = os.path.join(target_dir, safe_filename)
+
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".md",
+            delete=False,
+            encoding="utf-8",
+        ) as temp_file:
+            temp_file.write(markdown_content)
+            temp_path = temp_file.name
+
+        return convert_md_to_docx(temp_path, output_path)
+    finally:
+        if temp_path and os.path.exists(temp_path):
+            os.remove(temp_path)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Convert a Markdown PRD to DOCX.")
+    parser.add_argument("input", nargs="?", help="Path to the input Markdown file")
+    parser.add_argument("output", nargs="?", help="Path to the output DOCX file")
+    parser.add_argument(
+        "--filename",
+        help="Output DOCX filename when using inline markdown content",
+    )
+    parser.add_argument(
+        "--markdown_content",
+        help="Inline Markdown content to convert into DOCX",
+    )
+    parser.add_argument(
+        "--output_dir",
+        help="Optional directory where the DOCX file should be written",
+    )
+
+    args = parser.parse_args()
+
+    try:
+        if args.markdown_content is not None:
+            output_path = convert_markdown_content_to_docx(
+                args.markdown_content,
+                args.filename or "PRD_Document.docx",
+                args.output_dir,
+            )
+        elif args.input:
+            output_target = args.output or "PRD_Document.docx"
+            output_path = convert_md_to_docx(args.input, output_target)
+        else:
+            parser.error("Provide either an input Markdown file or --markdown_content.")
+
+        print(json.dumps({"status": "success", "path": output_path}))
+    except Exception as exc:
+        print(json.dumps({"status": "error", "message": str(exc)}))
         sys.exit(1)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Convert Markdown PRD to DOCX.")
-    parser.add_argument("input", help="Path to the input Markdown file")
-    parser.add_argument(
-        "output",
-        help="Path to the output DOCX file",
-        nargs="?",
-        default="PRD_Document.docx",
-    )
-
-    args = parser.parse_args()
-    convert_md_to_docx(args.input, args.output)
+    main()
