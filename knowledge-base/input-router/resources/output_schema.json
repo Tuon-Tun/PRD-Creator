@@ -1,0 +1,22 @@
+{
+  "Feature_Name": "Tên tính năng (Ngắn gọn, tự đúc kết từ input)",
+  "Input_Type": "Phân loại input (JTBDs / Wireframe Notes / Business Requirements / Mixed)",
+  "Core_Objective": "Mục tiêu chính của tính năng này là gì?",
+  "Target_Users": [
+    "Danh sách các đối tượng người dùng tương tác"
+  ],
+  "User_Flow": [
+    "Bước 1: ...",
+    "Bước 2: ..."
+  ],
+  "Business_Logic_and_Rules": [
+    "Quy tắc 1 (Vd: Điều kiện để kích hoạt hệ thống/tính năng)...",
+    "Quy tắc 2 (Vd: Xử lý khi dữ liệu không thỏa mãn)..."
+  ],
+  "UI_UX_Requirements": [
+    "Các ghi chú về giao diện, component, pop-up được nhắc đến trong input"
+  ],
+  "Missing_Information": [
+    "Liệt kê các rủi ro hoặc các case chưa được cover trong input để PO chú ý bổ sung"
+  ]
+}

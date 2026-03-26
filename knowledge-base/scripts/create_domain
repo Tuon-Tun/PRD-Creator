@@ -1,0 +1,62 @@
+import os
+import sys
+import json
+import argparse
+
+def create_domain_files(domain_name, initial_content):
+    # Định nghĩa đường dẫn gốc tới thư mục knowledge_base
+    # Sửa lại đường dẫn này nếu cấu trúc thư mục của bạn khác
+    base_kb_dir = os.path.join(os.getcwd(), "knowledge_base")
+    
+    # Validation cơ bản: Đảm bảo tên domain đúng format "domain_{name}"
+    if not domain_name.startswith("domain_"):
+        domain_name = f"domain_{domain_name}"
+        
+    # Validation: Chống Path Traversal (ngăn chặn AI tạo file lung tung ngoài hệ thống)
+    safe_domain_name = "".join(c for c in domain_name if c.isalnum() or c == "_")
+    
+    target_dir = os.path.join(base_kb_dir, safe_domain_name)
+    file_path = os.path.join(target_dir, "rules.md")
+    
+    try:
+        # 1. Tạo thư mục knowledge_base nếu chưa có
+        os.makedirs(base_kb_dir, exist_ok=True)
+        
+        # 2. Tạo thư mục domain
+        if os.path.exists(target_dir):
+            return json.dumps({
+                "status": "skipped",
+                "message": f"Thư mục {safe_domain_name} đã tồn tại. Bỏ qua bước tạo mới."
+            })
+            
+        os.makedirs(target_dir, exist_ok=True)
+        
+        # 3. Ghi file rules.md với nội dung khởi tạo từ AI
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(initial_content)
+            
+        # Trả về kết quả JSON để Agent đọc và xác nhận
+        return json.dumps({
+            "status": "success",
+            "message": f"Đã tạo thành công thư mục '{safe_domain_name}' và file 'rules.md'.",
+            "path": file_path
+        })
+        
+    except Exception as e:
+        # Trả về lỗi để Agent biết đường xử lý
+        return json.dumps({
+            "status": "error",
+            "message": str(e)
+        })
+
+if __name__ == "__main__":
+    # Cấu hình để nhận tham số từ Command Line do nền tảng Agent truyền vào
+    parser = argparse.ArgumentParser(description="Tạo file và thư mục Domain cho Agent")
+    parser.add_argument("--domain_name", required=True, help="Tên của domain")
+    parser.add_argument("--initial_content", required=True, help="Nội dung file rules.md")
+    
+    args = parser.parse_args()
+    
+    # Thực thi và in kết quả ra console (Standard Output) để Agent hứng lấy
+    result = create_domain_files(args.domain_name, args.initial_content)
+    print(result)
