@@ -7,7 +7,7 @@ This document provides instructions on how to use the PRD Writer tool and detail
 ## 1. Process Overview (The Automated HITL Pipeline)
 
 The PRD writing process is orchestrated by the **Master PRD Writer** (`prd-writer.md`), which helps transform raw user requirements into a complete, standard PRD document that can be exported to a DOCX file.
-
+**BPMN Warning:** Inform the user that BPMN is token-heavy and output is "Basic" (manual coordinate estimation).
 The process consists of 6 main steps with human intervention at critical decision points (Human-in-the-loop - HITL):
 
 ### Step 0: Diagram Requirement Confirmation (Clarification)
