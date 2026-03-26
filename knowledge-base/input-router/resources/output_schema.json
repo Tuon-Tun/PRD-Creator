@@ -10,7 +10,18 @@
   "Target_Users": [
     "specific actor or persona"
   ],
+  "Epic_Candidates": [
+    "epic candidate 1"
+  ],
   "Primary_User_Story": "As a [specific actor], I want to [action], so that [value].",
+  "User_Story_Candidates": [
+    {
+      "Title": "candidate story title",
+      "Actor": "specific actor or persona",
+      "Action": "desired outcome-focused action",
+      "Value": "user or business value"
+    }
+  ],
   "User_Flow": [
     "Step 1: ...",
     "Step 2: ..."

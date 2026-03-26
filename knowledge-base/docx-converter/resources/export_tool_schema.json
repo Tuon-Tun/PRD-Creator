@@ -16,12 +16,13 @@
       },
       "output_dir": {
         "type": "string",
-        "description": "Optional output directory. If omitted, the script uses the current working directory."
+        "description": "Required output directory. Use the domain PRD folder so the DOCX lands next to the Markdown PRD."
       }
     },
     "required": [
       "filename",
-      "markdown_content"
+      "markdown_content",
+      "output_dir"
     ]
   }
 }

@@ -36,6 +36,7 @@ Load `resources/prd-template.md`. Fill every section. Use `TBD` only when the ap
 
 - Acceptance Criteria must follow the `Done when` standard from `user-story-skill`.
 - Apply JTBD and user-story standards strictly; do not shortcut them to save tokens.
+- If `Epic_Candidates` or `User_Story_Candidates` are present in the brief, use them as the primary seeds for Section 3.1 before deriving any additional stories.
 - Functional Requirements must include a `High / Medium / Low` priority.
 - API details not provided -> mark `[DEV TO COMPLETE]`.
 - Use Case tables must include Actor, Precondition, Postcondition, Main Flow, Alternative Flow, and Exception Flow.

@@ -20,18 +20,19 @@ When a user provides a raw idea or note, you MUST execute the following steps in
 ### Step 1: Data Pre-processing (Call Input Router)
 
 * **Action:** Process raw inputs using `/knowledge-base/input-router/SKILL.md`. The output **MUST** be a structured JSON object that follows `/knowledge-base/input-router/resources/output_schema.json`, including `Domain_Name`.
+* **Bootstrap before persistence:** If `/domain-knowledge/[Domain_Name]` does not exist yet, initialize it with `knowledge-base/scripts/create_domain` before saving the JSON file.
 * **Input file storage:** Save the generated JSON draft to `/domain-knowledge/[Domain_Name]/inputs/[Feature_Name]_input.json`.
 * **Output:** Display the generated JSON to the user.
 * **Wait (HITL):** Ask: *"Does this JSON correctly reflect your requirements? Please approve it or request edits."*
 * **Constraint:** DO NOT move to Step 2 until the user explicitly approves the JSON.
 
-### Step 2: Domain Bootstrap & Knowledge Preparation
+### Step 2: Domain Knowledge Preparation
 
-* **Bootstrap the domain:** If `/domain-knowledge/[Domain_Name]` does not exist, initialize it with `knowledge-base/scripts/create_domain`.
 * **Required structure:** Every domain folder must follow this structure:
   * `/domain-knowledge/[Domain_Name]/inputs/`
   * `/domain-knowledge/[Domain_Name]/PRDs/`
-* **Read domain context:** Read `/domain-knowledge/[Domain_Name]` first. If prior inputs or PRDs exist in that domain, use them as additional context.
+  * `/domain-knowledge/[Domain_Name]/rules.md`
+* **Read domain context:** Read `/domain-knowledge/[Domain_Name]/rules.md` first. If prior inputs or PRDs exist in that domain, use them as additional context.
 * **PRD standards:** You **MUST** read and apply both `/knowledge-base/knowledge/jobs-to-be-done/SKILL.md` and `/knowledge-base/knowledge/user-story-skill/SKILL.md` for every PRD. User stories must follow INVEST, and acceptance criteria must follow the `Done when` standard from `user-story-skill`.
 
 ### Step 3: Drafting
@@ -63,9 +64,12 @@ When a user provides a raw idea or note, you MUST execute the following steps in
 ### Step 6: File Export (Call Docx Converter)
 
 * **Action:** Only after approval, pass the final Markdown content to `/knowledge-base/docx-converter/SKILL.md`.
-* **Objective:** The export step should generate `/domain-knowledge/[Domain_Name]/PRDs/[Feature_Name]_PRD.docx` by using `knowledge-base/scripts/export_docx.py`, then return the output path to the user.
+* **Required output path:** The export step **MUST** write the final DOCX to `/domain-knowledge/[Domain_Name]/PRDs/`.
+* **Execution rule:** Use `export_to_docx` when the platform exposes that tool. If the tool is unavailable, call `knowledge-base/scripts/export_docx.py` directly and pass `output_dir=/domain-knowledge/[Domain_Name]/PRDs`.
+* **Objective:** Generate `/domain-knowledge/[Domain_Name]/PRDs/[Feature_Name]_PRD.docx` and return the output path to the user.
 
 ## Best Practices & Rules
 
 * **Silent operation:** The pipeline may run silently only after the Step 1 JSON has been reviewed and approved. Steps 2 through 4 can run without piecemeal updates. Reappear at Step 5 with the complete reviewed draft.
 * **Zero hallucination:** Do not invent business rules. If the Input Router outputs `[NEEDS_CLARIFICATION]`, surface that gap to the user at the earliest approval checkpoint and keep unknown sections as `TBD` rather than fabricating details.
+* **Non-blocking integrations:** Optional capabilities such as Stitch MCP or a hosted export wrapper must never block final PRD delivery. If they are unavailable, fall back to the local path or skip the optional step.

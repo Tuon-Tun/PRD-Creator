@@ -20,14 +20,14 @@ The process has six main steps, with human approval gates at the key decision po
 ### Step 1: Data Pre-processing (Input Router)
 
 - The raw request is passed through the `input-router` skill and normalized into a structured JSON object.
-- The JSON includes feature scope, domain name, user flow, business logic, requirements, success metrics, and missing information.
+- The JSON includes feature scope, domain name, story candidates, user flow, business logic, requirements, success metrics, and missing information.
+- If the domain folder does not exist yet, the system creates it before persisting the JSON file.
 - The draft JSON is stored under `/domain-knowledge/[Domain_Name]/inputs/`.
 - The user must review and approve this JSON before drafting begins.
 
-### Step 2: Domain Bootstrap & Knowledge Preparation
+### Step 2: Domain Knowledge Preparation
 
 - The system reads `/domain-knowledge/[Domain_Name]/rules.md` and any existing PRDs or prior inputs in the same domain.
-- If the domain folder does not exist yet, the system creates `/inputs`, `/PRDs`, and `/rules.md` automatically.
 - The system also applies standards from:
   - `/knowledge-base/knowledge/jobs-to-be-done/SKILL.md`
   - `/knowledge-base/knowledge/user-story-skill/SKILL.md`
@@ -58,7 +58,8 @@ The process has six main steps, with human approval gates at the key decision po
 ### Step 6: File Export (DOCX)
 
 - After approval, the final Markdown PRD is exported to `.docx`.
-- The output file is stored next to the Markdown PRD inside the same domain folder.
+- The output file must be stored inside `/domain-knowledge/[Domain_Name]/PRDs/`.
+- If a hosted export wrapper is unavailable, the workflow should call the local export script directly instead of failing the pipeline.
 
 ---
 

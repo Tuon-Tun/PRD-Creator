@@ -57,8 +57,13 @@ def sanitize_filename(filename):
 
 
 def convert_markdown_content_to_docx(markdown_content, filename, output_dir=None):
+    if not output_dir:
+        raise ValueError(
+            "output_dir is required when converting inline markdown content."
+        )
+
     safe_filename = sanitize_filename(filename)
-    target_dir = os.path.abspath(output_dir or os.getcwd())
+    target_dir = os.path.abspath(output_dir)
     os.makedirs(target_dir, exist_ok=True)
     output_path = os.path.join(target_dir, safe_filename)
 

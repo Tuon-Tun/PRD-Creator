@@ -24,8 +24,6 @@
 
 ### 2.1 Problem Statement / Context
 
-<!-- PM fills this section. Do not generate. -->
-
 **Context**
 
 - Current behavior:
