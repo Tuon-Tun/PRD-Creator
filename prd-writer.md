@@ -40,18 +40,28 @@ When a user provides a raw idea or note, you MUST execute the following steps in
 * Pass the approved JSON from Step 1 into `/knowledge-base/prd-template/SKILL.md`.
 * The drafting skill **MUST** use `/knowledge-base/prd-template/resources/prd-template.md`.
 * For the `Version History` and `References` sections, keep the table format but do not invent content.
+* **Diagram generation:** When Section 3.3 requires diagrams, the drafting skill delegates to `/knowledge-base/prd-template/diagram-writer/SKILL.md`. All diagram rules live there. Do not generate diagram code from any other source.
 * **Domain standard storage:** Save the Markdown draft to `/domain-knowledge/[Domain_Name]/PRDs/[Feature_Name]_PRD.md`. Do not save drafts in the repository root.
 
 ### Step 4: Quality Assurance (Call PRD Reviewer)
 
-* **Action:** Pass the drafted PRD to the `knowledge-base/prd-reviewer.md` skill.
-* **Objective & format:** Receive a QA report listing logic gaps, missing coverage, and weak acceptance criteria. Insert review notes inline, directly below the affected sections, using a distinct format such as `> [!WARNING] REVIEWER'S NOTE:`.
-* **Review standard:** The reviewer validates business logic, JTBD alignment, edge cases, and `Done when` acceptance criteria coverage.
-* **Token optimization:** Use a local file edit tool to insert or update review notes directly in the draft PRD. Do not rewrite the full file. Do not group review notes at the end.
+* **Action:** Pass the full drafted PRD text to `knowledge-base/prd-reviewer.md`.
+* **Expected output:** The reviewer returns a **JSON array** of reviewer notes. Each note has: `note_id`, `section`, `risk`, `fix_a`, `fix_b`.
+* **Insert notes inline:** For each note in the array, use a local file edit tool (`str_replace` or equivalent) to insert the note directly below the affected section heading in the PRD file. Use this exact format so notes are visually distinct:
+
+  ```
+  > [!WARNING] REVIEWER'S NOTE (RN-XX)
+  > **Risk:** [risk text]
+  > **Option A:** [fix_a text]
+  > **Option B:** [fix_b text]
+  ```
+
+* **If the reviewer returns `[]`:** No inserts needed. Log `QA passed — no gaps found` and proceed to Step 5.
+* **Token optimization:** Edit the draft file in place with targeted inserts. Do not rewrite the full file.
 
 ### Step 5: User Approval (CRITICAL PAUSE)
 
-* **Action:** Present the complete PRD draft to the user.
+* **Action:** Present the complete PRD draft (with reviewer notes inline) to the user.
 * **Mandate:** YOU MUST STOP HERE. Ask the user: *"Here is the reviewed PRD draft. Would you like to adjust anything, add information, or approve this version?"*
 * **Wait:** DO NOT proceed to Step 6 until the user explicitly approves. If the user requests edits, update the draft and return to Step 5.
 
@@ -73,3 +83,4 @@ When a user provides a raw idea or note, you MUST execute the following steps in
 * **Silent operation:** The pipeline may run silently only after the Step 1 JSON has been reviewed and approved. Steps 2 through 4 can run without piecemeal updates. Reappear at Step 5 with the complete reviewed draft.
 * **Zero hallucination:** Do not invent business rules. If the Input Router outputs `[NEEDS_CLARIFICATION]`, surface that gap to the user at the earliest approval checkpoint and keep unknown sections as `TBD` rather than fabricating details.
 * **Non-blocking integrations:** Optional capabilities such as Stitch MCP or a hosted export wrapper must never block final PRD delivery. If they are unavailable, fall back to the local path or skip the optional step.
+* **Single source of truth for diagrams:** All diagram generation rules live exclusively in `diagram-writer/SKILL.md`. Do not read diagram rules from any other file.
